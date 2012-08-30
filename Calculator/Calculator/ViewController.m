@@ -41,11 +41,11 @@
 
 - (IBAction)digitPressed:(UIButton *)sender {
     if (self.userIsInTheMiddleOfEnteringANumber) {
-        if (![@"0" isEqualToString:self.display.text]) {
+        if (![@"0" isEqualToString:self.display.text]) 
             self.display.text = [self.display.text stringByAppendingString:[sender currentTitle]];
-        } else {
+        else 
             self.display.text = [sender currentTitle];
-        }
+        
     } else {
         self.userIsInTheMiddleOfEnteringANumber = YES;
         self.display.text = [sender currentTitle];
@@ -60,9 +60,8 @@
     NSAssert(self.history.count <= kHistoryCapacity,
              @"Error: Too many history elements");
     
-    if(self.history.count == kHistoryCapacity){
+    if(self.history.count == kHistoryCapacity)
         [self.history removeObjectAtIndex:0];
-    }
     
     //display pi & e properly
     if([self.display.text isEqualToString:@"3.14159"])
@@ -76,9 +75,8 @@
 }
 
 - (IBAction)operationPressed:(UIButton *)sender {
-    if(self.userIsInTheMiddleOfEnteringANumber){
+    if(self.userIsInTheMiddleOfEnteringANumber)
         [self enterPressed];
-    }
     
     NSString *operation = [sender currentTitle];
     double result = [self.brain performOperand:operation];
@@ -88,9 +86,8 @@
     NSAssert(self.history.count <= kHistoryCapacity,
              @"Error: Too many history elements");
     
-    if(self.history.count == kHistoryCapacity){
+    if(self.history.count == kHistoryCapacity)
         [self.history removeObjectAtIndex:0];
-    }
     
     //don't add to history for pi & e
     if(![operation isEqualToString:@"π"] &&![operation isEqualToString:@"e"])
@@ -105,9 +102,8 @@
         self.userIsInTheMiddleOfEnteringANumber = YES;
     } else {
         NSRange range = [self.display.text rangeOfString:@"." options:NSCaseInsensitiveSearch];
-        if (range.location == NSNotFound) {
+        if (range.location == NSNotFound) 
             self.display.text = [self.display.text stringByAppendingString:@"."];
-        }
     }
 }
 

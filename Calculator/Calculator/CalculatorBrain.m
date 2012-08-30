@@ -20,9 +20,7 @@
 -(NSMutableArray *)operandStack
 {
     if(!_operandStack)
-    {
         _operandStack = [[NSMutableArray alloc] init];
-    }
     
     return _operandStack;
 }
