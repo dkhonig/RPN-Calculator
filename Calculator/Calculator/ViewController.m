@@ -40,23 +40,15 @@
 }
 
 - (IBAction)digitPressed:(UIButton *)sender {
-    NSString *digit = [sender currentTitle];
-    NSRange range = [self.display.text rangeOfString:@"."];
-    if(self.userIsInTheMiddleOfEnteringANumber)
-    {
-        if ( ! ([digit isEqual:@"."] && (range.location != NSNotFound))) {
-            self.display.text = [self.display.text stringByAppendingString:digit];
+    if (self.userIsInTheMiddleOfEnteringANumber) {
+        if (![@"0" isEqualToString:self.display.text]) {
+            self.display.text = [self.display.text stringByAppendingString:[sender currentTitle]];
+        } else {
+            self.display.text = [sender currentTitle];
         }
-    }
-    else {
-        if ([digit isEqual:@"."]){
-            self.display.text = @"0.";
-        }
-        else {
-            self.display.text = digit; 
-        }
-        
+    } else {
         self.userIsInTheMiddleOfEnteringANumber = YES;
+        self.display.text = [sender currentTitle];
     }
 }
 
@@ -72,7 +64,11 @@
         [self.history removeObjectAtIndex:0];
     }
     
-    [self.history addObject:self.display.text];
+    //display pi properly
+    if([self.display.text isEqualToString:@"3.14159"])
+        [self.history addObject:@"π"];
+    else
+        [self.history addObject:self.display.text];
     
     self.historyDisplay.text = [self.history componentsJoinedByString:@" "];
 }
@@ -84,6 +80,7 @@
     
     NSString *operation = [sender currentTitle];
     double result = [self.brain performOperand:operation];
+    if(result)
     self.display.text = [NSString stringWithFormat:@"%g", result];
     
     NSAssert(self.history.count <= kHistoryCapacity,
@@ -93,10 +90,25 @@
         [self.history removeObjectAtIndex:0];
     }
     
-    [self.history addObject: sender.currentTitle];
+    //don't add to history for pi
+    if(![operation isEqualToString:@"π"])
+        [self.history addObject: sender.currentTitle];
     
     self.historyDisplay.text = [[self.history componentsJoinedByString:@" "]stringByAppendingString:@" ="];
 }
+
+- (IBAction)dotPressed {
+    if (!self.userIsInTheMiddleOfEnteringANumber) {
+        self.display.text = @"0.";
+        self.userIsInTheMiddleOfEnteringANumber = YES;
+    } else {
+        NSRange range = [self.display.text rangeOfString:@"." options:NSCaseInsensitiveSearch];
+        if (range.location == NSNotFound) {
+            self.display.text = [self.display.text stringByAppendingString:@"."];
+        }
+    }
+}
+
 - (IBAction)backPress {
     if(self.userIsInTheMiddleOfEnteringANumber)
     {
