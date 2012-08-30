@@ -90,6 +90,10 @@
     else if ([operation isEqualToString:@"log"]) {
         result = log([self popOperand]);
     }
+    else if([operation isEqualToString:@"e"])
+    {
+        result = M_E;
+    }
     
     [self pushOperand:result];
     

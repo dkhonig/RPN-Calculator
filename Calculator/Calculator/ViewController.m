@@ -64,9 +64,11 @@
         [self.history removeObjectAtIndex:0];
     }
     
-    //display pi properly
+    //display pi & e properly
     if([self.display.text isEqualToString:@"3.14159"])
         [self.history addObject:@"π"];
+    else if([self.display.text isEqualToString:@"2.71828"])
+        [self.history addObject:@"e"];
     else
         [self.history addObject:self.display.text];
     
@@ -90,8 +92,8 @@
         [self.history removeObjectAtIndex:0];
     }
     
-    //don't add to history for pi
-    if(![operation isEqualToString:@"π"])
+    //don't add to history for pi & e
+    if(![operation isEqualToString:@"π"] &&![operation isEqualToString:@"e"])
         [self.history addObject: sender.currentTitle];
     
     self.historyDisplay.text = [[self.history componentsJoinedByString:@" "]stringByAppendingString:@" ="];
